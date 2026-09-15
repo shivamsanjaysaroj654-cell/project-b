@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff7f7" />
+  <meta name="description" content="A romantic interactive relationship timeline birthday gift." />
+  <title>Our Story ♡</title>
+
+  <!-- Elegant + clean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#fff9f7;
+      --bg-2:#fff1ef;
+      --paper:rgba(255,255,255,.83);
+      --ink:#3e3034;
+      --muted:#7f6d73;
+      --rose:#d98d9b;
+      --rose-dark:#b96778;
+      --rose-soft:#f7dce1;
+      --cream:#fff4e8;
+      --line:#e8c8ce;
+      --shadow:0 18px 55px rgba(116,73,82,.12);
+      --shadow-soft:0 10px 28px rgba(116,73,82,.08);
+      --radius:26px;
+      --max:1100px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      font-family:"Inter",system-ui,-apple-system,Segoe UI,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(248,210,218,.55), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(255,230,202,.48), transparent 26%),
+        linear-gradient(180deg,var(--bg) 0%,#fff 48%,var(--bg-2) 100%);
+      overflow-x:hidden;
+    }
+    body.locked{overflow:hidden}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    img{display:block;max-width:100%}
+
+    /* ----------------------------
+       Intro / Love Gate
+    ----------------------------- */
+    .gate{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.92), transparent 30%),
+        linear-gradient(145deg,#fff7f6,#fbe6e8 48%,#fff2ea);
+      transition:opacity .9s cubic-bezier(.22,.61,.36,1), visibility .9s;
+    }
+    .gate.hidden{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .gate-glow{
+      position:absolute;
+      width:34rem;
+      height:34rem;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(234,154,169,.22),transparent 68%);
+      filter:blur(8px);
+      animation:slowPulse 4.8s ease-in-out infinite;
+    }
+    .gate-card{
+      position:relative;
+      z-index:2;
+      width:min(92vw,480px);
+      padding:38px;
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:32px;
+      background:rgba(255,255,255,.68);
+      box-shadow:0 28px 80px rgba(117,72,83,.16);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      text-align:center;
+      animation:gateIn 1.1s cubic-bezier(.16,1,.3,1) both;
+    }
+    .gate-heart{
+      width:74px;height:74px;
+      display:grid;place-items:center;
+      margin:0 auto 18px;
+      border-radius:50%;
+      font-size:34px;
+      background:linear-gradient(145deg,#fff,#ffe8eb);
+      box-shadow:0 12px 35px rgba(196,106,124,.18);
+      animation:heartBeat 1.8s ease-in-out infinite;
+    }
+    .eyebrow{
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:.7rem;
+      font-weight:700;
+      color:var(--rose-dark);
+      margin-bottom:11px;
+    }
+    .gate-title{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(2.2rem,7vw,3.6rem);
+      line-height:.95;
+      margin-bottom:14px;
+    }
+    .gate-copy{
+      color:var(--muted);
+      line-height:1.75;
+      margin-bottom:25px;
+    }
+    .form{
+      display:grid;
+      gap:12px;
+      text-align:left;
+    }
+    .field{
+      position:relative;
+    }
+    .field input{
+      width:100%;
+      border:1px solid rgba(190,126,140,.24);
+      background:rgba(255,255,255,.86);
+      border-radius:16px;
+      padding:15px 16px;
+      outline:none;
+      color:var(--ink);
+      transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+    .field input:focus{
+      border-color:rgba(185,103,120,.6);
+      box-shadow:0 0 0 4px rgba(217,141,155,.11);
+      transform:translateY(-1px);
+    }
+    .enter-btn{
+      border:0;
+      border-radius:16px;
+      padding:15px 20px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--rose-dark),#d99baa);
+      box-shadow:0 14px 30px rgba(185,103,120,.22);
+      font-weight:700;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .enter-btn:hover{transform:translateY(-2px);box-shadow:0 18px 35px rgba(185,103,120,.28)}
+    .enter-btn:active{transform:translateY(0)}
+    .error{
+      min-height:20px;
+      padding-top:3px;
+      color:#b44d5b;
+      font-size:.84rem;
+      text-align:center;
+    }
+    .shake{animation:shake .45s ease}
+    .gate-hint{
+      margin-top:12px;
+      font-size:.72rem;
+      color:#9a868c;
+    }
+
+    /* floating decoration */
+    .floaters{
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+    }
+    .floater{
+      position:absolute;
+      opacity:.5;
+      font-size:clamp(13px,2vw,22px);
+      animation:floatUp linear infinite;
+      will-change:transform,opacity;
+    }
+
+    /* ----------------------------
+       Main
+    ----------------------------- */
+    .app{
+      position:relative;
+      isolation:isolate;
+    }
+    .ambient{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .ambient-orb{
+      position:absolute;
+      width:260px;height:260px;
+      border-radius:50%;
+      opacity:.38;
+      filter:blur(14px);
+      will-change:transform;
+    }
+    .orb-a{top:8%;left:-80px;background:#f7d3da;animation:driftA 16s ease-in-out infinite alternate}
+    .orb-b{right:-100px;top:39%;background:#ffe0c2;animation:driftB 19s ease-in-out infinite alternate}
+    .orb-c{left:10%;bottom:-80px;background:#ead9e8;animation:driftC 17s ease-in-out infinite alternate}
+
+    .hero{
+      position:relative;
+      min-height:78vh;
+      display:grid;
+      place-items:center;
+      padding:90px 20px 70px;
+      text-align:center;
+      overflow:hidden;
+    }
+    .hero-content{
+      max-width:790px;
+      animation:heroIn 1.2s .1s cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:9px 13px;
+      margin-bottom:17px;
+      border:1px solid rgba(210,132,146,.23);
+      border-radius:999px;
+      background:rgba(255,255,255,.6);
+      color:var(--rose-dark);
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .hero-title{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(3.4rem,9vw,7rem);
+      line-height:.88;
+      letter-spacing:-.035em;
+      margin-bottom:22px;
+    }
+    .hero-title span{display:block}
+    .hero-title .accent{color:var(--rose-dark);font-style:italic}
+    .hero-sub{
+      max-width:640px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:1.02rem;
+      line-height:1.8;
+    }
+    .hero-line{
+      width:85px;
+      height:1px;
+      margin:28px auto;
+      background:linear-gradient(90deg,transparent,var(--rose-dark),transparent);
+      animation:linePulse 2.8s ease-in-out infinite;
+    }
+    .scroll-cue{
+      position:absolute;
+      bottom:25px;
+      left:50%;
+      transform:translateX(-50%);
+      display:grid;
+      gap:8px;
+      justify-items:center;
+      color:#927e84;
+      font-size:.7rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      animation:cueFloat 2.5s ease-in-out infinite;
+    }
+    .scroll-cue i{
+      width:18px;height:28px;
+      border:1px solid rgba(112,80,88,.35);
+      border-radius:14px;
+      position:relative;
+    }
+    .scroll-cue i::after{
+      content:"";
+      position:absolute;
+      width:3px;height:7px;
+      border-radius:3px;
+      left:50%;top:5px;
+      transform:translateX(-50%);
+      background:#9b7982;
+      animation:scrollDot 1.7s ease-in-out infinite;
+    }
+
+    /* ----------------------------
+       Timeline
+    ----------------------------- */
+    .timeline-wrap{
+      width:min(100% - 28px,var(--max));
+      margin:0 auto;
+      padding:15px 0 90px;
+      position:relative;
+    }
+    .timeline{
+      position:relative;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      top:0;bottom:0;
+      left:50%;
+      width:1px;
+      transform:translateX(-50%);
+      background:linear-gradient(
+        180deg,
+        transparent,
+        rgba(201,132,145,.65) 8%,
+        rgba(201,132,145,.65) 92%,
+        transparent
+      );
+    }
+    .chapter{
+      position:relative;
+      display:flex;
+      width:100%;
+      margin:0 0 80px;
+    }
+    .chapter.left{justify-content:flex-start;padding-right:calc(50% + 46px)}
+    .chapter.right{justify-content:flex-end;padding-left:calc(50% + 46px)}
+
+    .chapter-dot{
+      position:absolute;
+      top:26px;left:50%;
+      width:16px;height:16px;
+      border:4px solid #fff;
+      border-radius:50%;
+      transform:translateX(-50%);
+      background:var(--rose-dark);
+      box-shadow:0 0 0 5px rgba(217,141,155,.13), 0 7px 18px rgba(185,103,120,.2);
+      z-index:2;
+    }
+    .chapter-dot::after{
+      content:"";
+      position:absolute;
+      inset:-7px;
+      border-radius:50%;
+      border:1px solid rgba(185,103,120,.22);
+      animation:dotPulse 2.7s ease-out infinite;
+    }
+
+    .card{
+      width:100%;
+      border:1px solid rgba(194,145,153,.21);
+      border-radius:var(--radius);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(9px);
+      -webkit-backdrop-filter:blur(9px);
+      overflow:hidden;
+      opacity:0;
+      transform:translate3d(0,34px,0) scale(.985);
+      transition:
+        opacity .85s cubic-bezier(.16,1,.3,1),
+        transform .85s cubic-bezier(.16,1,.3,1),
+        box-shadow .28s ease;
+      will-change:transform,opacity;
+    }
+    .chapter.left .card{transform:translate3d(-34px,34px,0) scale(.985)}
+    .chapter.right .card{transform:translate3d(34px,34px,0) scale(.985)}
+    .chapter.visible .card{opacity:1;transform:translate3d(0,0,0) scale(1)}
+    .card:hover{box-shadow:0 24px 70px rgba(116,73,82,.17)}
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:19px 20px 12px;
+    }
+    .chapter-number{
+      color:var(--rose-dark);
+      font-size:.7rem;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .date{
+      color:#9b858c;
+      font-size:.72rem;
+      white-space:nowrap;
+    }
+    .card-body{padding:0 20px 21px}
+    .card-title{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(1.7rem,3vw,2.2rem);
+      line-height:1.05;
+      margin-bottom:10px;
+    }
+    .card-text{
+      color:var(--muted);
+      line-height:1.75;
+      font-size:.93rem;
+    }
+
+    /* Swipeable gallery */
+    .gallery-wrap{
+      position:relative;
+      padding:0 12px;
+    }
+    .gallery{
+      display:flex;
+      gap:11px;
+      overflow-x:auto;
+      padding:2px 2px 12px;
+      scroll-snap-type:x mandatory;
+      overscroll-behavior-x:contain;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .gallery::-webkit-scrollbar{display:none}
+    .gallery img{
+      flex:0 0 calc(82% - 4px);
+      width:100%;
+      height:250px;
+      object-fit:cover;
+      border-radius:19px;
+      scroll-snap-align:start;
+      user-select:none;
+      -webkit-user-drag:none;
+      background:#f3e5e2;
+      box-shadow:0 8px 22px rgba(102,65,74,.09);
+      transition:transform .3s ease,filter .3s ease;
+      will-change:transform;
+    }
+    .gallery img:active{transform:scale(.985)}
+
+    .video-gallery{
+      scroll-snap-type:x mandatory;
+    }
+    .video-slide{
+      position:relative;
+      flex:0 0 calc(82% - 4px);
+      scroll-snap-align:start;
+      border-radius:19px;
+      overflow:hidden;
+      background:#21191b;
+      box-shadow:0 8px 22px rgba(102,65,74,.10);
+    }
+    .video-slide video{
+      display:block;
+      width:100%;
+      height:250px;
+      object-fit:cover;
+      background:#21191b;
+    }
+    .video-label{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      padding:6px 9px;
+      border-radius:999px;
+      color:#fff;
+      background:rgba(42,28,32,.58);
+      border:1px solid rgba(255,255,255,.22);
+      font-size:.66rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      pointer-events:none;
+    }
+    .swipe-hint{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:6px;
+      padding:1px 4px 0;
+      color:#a1878e;
+      font-size:.69rem;
+      animation:hintPulse 2.4s ease-in-out infinite;
+    }
+    .swipe-hint span{font-size:.92rem}
+
+    .chapter-video-gallery{
+      display:block;
+      overflow:hidden;
+      padding-bottom:12px;
+    }
+    .chapter-video{
+      display:block;
+      width:100%;
+      height:250px;
+      object-fit:cover;
+      border-radius:19px;
+      background:#f3e5e2;
+      box-shadow:0 8px 22px rgba(102,65,74,.09);
+    }
+
+    .quote{
+      margin-top:13px;
+      padding:13px 15px;
+      border-radius:16px;
+      background:linear-gradient(135deg,rgba(255,241,239,.94),rgba(255,249,244,.94));
+      color:#806a72;
+      font-family:"Playfair Display",serif;
+      font-size:.96rem;
+      line-height:1.55;
+    }
+
+    /* ----------------------------
+       Final surprise
+    ----------------------------- */
+    .surprise{
+      width:min(100% - 28px,820px);
+      margin:20px auto 100px;
+      text-align:center;
+      padding:48px 25px;
+      border-radius:34px;
+      background:rgba(255,255,255,.7);
+      border:1px solid rgba(194,145,153,.22);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .surprise::before{
+      content:"";
+      position:absolute;
+      width:230px;height:230px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(247,193,204,.38),transparent 70%);
+      left:50%;top:-100px;
+      transform:translateX(-50%);
+      pointer-events:none;
+    }
+    .surprise-heart{
+      position:relative;
+      z-index:1;
+      width:66px;height:66px;
+      display:grid;place-items:center;
+      margin:0 auto 14px;
+      border-radius:50%;
+      font-size:29px;
+      background:#fff3f3;
+      box-shadow:0 12px 30px rgba(190,112,130,.14);
+      animation:heartBeat 1.8s ease-in-out infinite;
+    }
+    .surprise h2{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(2rem,5vw,3.2rem);
+      margin-bottom:10px;
+    }
+    .surprise p{
+      max-width:620px;
+      margin:0 auto 19px;
+      color:var(--muted);
+      line-height:1.75;
+    }
+    .surprise-btn{
+      border:0;
+      border-radius:999px;
+      padding:13px 20px;
+      background:#3f3035;
+      color:#fff;
+      box-shadow:0 12px 25px rgba(63,48,53,.18);
+      transition:transform .22s ease,box-shadow .22s ease;
+    }
+    .surprise-btn:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(63,48,53,.23)}
+
+    .footer{
+      text-align:center;
+      color:#a08c91;
+      font-size:.72rem;
+      padding:0 20px 30px;
+    }
+
+    /* modal */
+    .modal{
+      position:fixed;inset:0;z-index:800;
+      display:grid;place-items:center;
+      padding:20px;
+      background:rgba(53,37,42,.27);
+      opacity:0;visibility:hidden;pointer-events:none;
+      transition:opacity .35s ease, visibility .35s ease;
+      backdrop-filter:blur(5px);
+    }
+    .modal.open{opacity:1;visibility:visible;pointer-events:auto}
+    .modal-box{
+      width:min(100%,650px);
+      max-height:90vh;
+      overflow:auto;
+      border-radius:28px;
+      background:#fffaf8;
+      border:1px solid rgba(255,255,255,.86);
+      padding:16px;
+      box-shadow:0 30px 90px rgba(57,40,45,.3);
+      transform:translateY(18px) scale(.98);
+      transition:transform .42s cubic-bezier(.16,1,.3,1);
+    }
+    .modal.open .modal-box{transform:translateY(0) scale(1)}
+    .modal-box img{
+      width:100%;
+      max-height:65vh;
+      object-fit:cover;
+      border-radius:20px;
+    }
+    .modal-close{
+      display:block;
+      margin:12px auto 0;
+      border:0;
+      background:#f6e4e5;
+      color:#765961;
+      padding:10px 16px;
+      border-radius:999px;
+    }
+
+    /* confetti */
+    .confetti-layer{
+      position:fixed;inset:0;z-index:1000;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .confetti{
+      position:absolute;
+      top:-25px;
+      width:8px;height:12px;
+      border-radius:2px;
+      opacity:.95;
+      animation:confettiFall linear forwards;
+      will-change:transform,opacity;
+    }
+
+    /* ----------------------------
+       Motion
+    ----------------------------- */
+    @keyframes gateIn{
+      from{opacity:0;transform:translateY(25px) scale(.97)}
+      to{opacity:1;transform:none}
+    }
+    @keyframes heroIn{
+      from{opacity:0;transform:translateY(28px)}
+      to{opacity:1;transform:none}
+    }
+    @keyframes heartBeat{
+      0%,100%{transform:scale(1)}
+      14%{transform:scale(1.08)}
+      28%{transform:scale(1)}
+      42%{transform:scale(1.05)}
+      55%{transform:scale(1)}
+    }
+    @keyframes slowPulse{
+      0%,100%{transform:scale(.94);opacity:.55}
+      50%{transform:scale(1.05);opacity:.85}
+    }
+    @keyframes floatUp{
+      0%{transform:translate3d(0,18vh,0) rotate(0deg);opacity:0}
+      12%{opacity:.55}
+      85%{opacity:.35}
+      100%{transform:translate3d(0,-115vh,0) rotate(24deg);opacity:0}
+    }
+    @keyframes driftA{to{transform:translate3d(90px,100px,0) scale(1.1)}}
+    @keyframes driftB{to{transform:translate3d(-80px,-70px,0) scale(.92)}}
+    @keyframes driftC{to{transform:translate3d(110px,-90px,0) scale(1.05)}}
+    @keyframes linePulse{0%,100%{opacity:.5;transform:scaleX(.7)}50%{opacity:1;transform:scaleX(1)}}
+    @keyframes cueFloat{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,5px)}}
+    @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    @keyframes dotPulse{
+      0%{transform:scale(.6);opacity:.8}
+      70%{transform:scale(1.15);opacity:0}
+      100%{transform:scale(1.15);opacity:0}
+    }
+    @keyframes hintPulse{0%,100%{opacity:.62}50%{opacity:1}}
+    @keyframes shake{
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(7px)}
+      60%{transform:translateX(-5px)}
+      80%{transform:translateX(3px)}
+      100%{transform:translateX(0)}
+    }
+    @keyframes confettiFall{
+      0%{transform:translate3d(0,0,0) rotate(0deg);opacity:1}
+      100%{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin));opacity:0}
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+        scroll-behavior:auto!important;
+      }
+    }
+
+    /* ----------------------------
+       Mobile
+    ----------------------------- */
+    @media (max-width:760px){
+      .gate-card{padding:30px 22px;border-radius:27px}
+      .hero{min-height:70vh;padding-top:82px}
+      .timeline-wrap{width:min(100% - 22px,var(--max));}
+      .timeline::before{
+        left:19px;
+        transform:none;
+      }
+      .chapter,
+      .chapter.left,
+      .chapter.right{
+        display:block;
+        padding:0 0 0 48px;
+        margin-bottom:54px;
+      }
+      .chapter-dot{
+        left:19px;
+        transform:translateX(-50%);
+      }
+      .chapter.left .card,
+      .chapter.right .card{
+        transform:translate3d(0,32px,0) scale(.985);
+      }
+      .chapter.visible .card{transform:translate3d(0,0,0) scale(1)}
+      .card-top{padding:17px 17px 10px}
+      .card-body{padding:0 17px 18px}
+      .gallery img{height:220px;flex-basis:88%}
+      .video-slide{flex-basis:88%}
+      .video-slide video{height:220px}
+      .chapter-video{height:220px}
+      .surprise{margin-bottom:70px;padding:37px 20px}
+    }
+  </style>
+</head>
+
+<body class="locked">
+
+  <!-- =========================
+       LOVE GATE
+  ========================== -->
+  <section class="gate" id="gate" aria-label="Love Gate">
+    <div class="gate-glow"></div>
+    <div class="floaters" id="gateFloaters"></div>
+
+    <div class="gate-card" id="gateCard">
+      <div class="gate-heart">♡</div>
+      <div class="eyebrow">A little secret place</div>
+      <h1 class="gate-title">Welcome to<br>Our Story</h1>
+      <p class="gate-copy">
+        Some memories are too beautiful to be kept in a gallery.
+        This one is just for you. ✨
+      </p>
+
+      <form class="form" id="loginForm" novalidate>
+        <div class="field">
+          <input id="userId" type="text" autocomplete="off" placeholder="Future Husband's Name" aria-label="Future Husband's Name" />
+        </div>
+        <div class="field">
+          <input id="password" type="password" inputmode="numeric" autocomplete="off"
+                 placeholder="Our Anniversary Date (DDMMYYYY)" aria-label="Our Anniversary Date" />
+        </div>
+        <button class="enter-btn" type="submit">Open Our Little Universe ♡</button>
+        <div class="error" id="error" aria-live="polite"></div>
+      </form>
+
+      <div class="gate-hint">Tip: the secret is the name + anniversary date only you know 💌</div>
+    </div>
+  </section>
+
+  <main class="app" id="app">
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient-orb orb-a"></div>
+      <div class="ambient-orb orb-b"></div>
+      <div class="ambient-orb orb-c"></div>
+    </div>
+
+    <!-- =========================
+         HERO
+    ========================== -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-kicker">For the girl who makes life beautiful ✨</div>
+        <h1 class="hero-title">
+          <span>Our Story</span>
+          <span class="accent">so far…</span>
+        </h1>
+        <div class="hero-line"></div>
+        <p class="hero-sub">
+          A collection of tiny moments, big feelings, ridiculous laughs,
+          and every little reason I’m grateful that our paths crossed.
+        </p>
+      </div>
+
+      <div class="scroll-cue">
+        <span>Scroll through our memories</span>
+        <i></i>
+      </div>
+    </section>
+
+    <!-- =========================
+         TIMELINE
+         Replace images, dates, titles and text with your memories.
+    ========================== -->
+    <section class="timeline-wrap" id="timelineSection">
+      <div class="timeline">
+
+        <article class="chapter left">
+          <div class="chapter-dot"></div>
+          <div class="card">
+            <div class="card-top">
+              <div class="chapter-number">Chapter 01 · The beginning</div>
+              <div class="date">Our First Day</div>
+            </div>
+            <div class="gallery-wrap">
+              <div class="gallery">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 9.59.58 PM (7).jpeg" alt="Romantic memory 1">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 10.36.37 PM.jpeg" alt="Romantic memory 2">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.16.41 PM\WhatsApp Image 2026-09-15 at 10.32.37 PM.jpeg" alt="Romantic memory 3">
+              </div>
+              <div class="swipe-hint"><span>Swipe to see more ➜</span></div>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">The day everything changed</h2>
+              <p class="card-text">
+                I didn’t know it then, but this was the start of one of the
+                most special chapters of my life.
+              </p>
+              <div class="quote">“And somehow, the universe got one thing very, very right.”</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter right">
+          <div class="chapter-dot"></div>
+          <div class="card">
+            <div class="card-top">
+              <div class="chapter-number">Chapter 02 · Little things</div>
+              <div class="date">The Laughs</div>
+            </div>
+            <div class="gallery-wrap">
+              <div class="gallery">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.16.41 PM\WhatsApp Image 2026-09-15 at 10.33.11 PM.jpeg" alt="Happy memory 1">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.16.41 PM\WhatsApp Image 2026-09-15 at 10.33.27 PM.jpeg" alt="Happy memory 2">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.17.25 PM\WhatsApp Image 2026-09-15 at 10.57.20 PM.jpeg" alt="Happy memory 3">
+              </div>
+              <div class="swipe-hint"><span>Swipe to see more ➜</span></div>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">My favourite kind of chaos</h2>
+              <p class="card-text">
+                The silly jokes, the random conversations, the “remember when…”
+                stories. I love that ordinary moments feel extraordinary with you.
+              </p>
+              <div class="quote">“My favourite place is wherever you are laughing.”</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter left">
+          <div class="chapter-dot"></div>
+          <div class="card">
+            <div class="card-top">
+              <div class="chapter-number">Chapter 03 · Adventures</div>
+              <div class="date">Everywhere &amp; Nowhere</div>
+            </div>
+            <div class="gallery-wrap">
+              <div class="gallery">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 10.36.27 PM.jpeg" alt="Adventure memory 1">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 10.36.45 PM.jpeg" alt="Adventure memory 2">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 10.36.17 PM.jpeg" alt="Adventure memory 3">
+              </div>
+              <div class="swipe-hint"><span>Swipe to see more ➜</span></div>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">Anywhere is better with you</h2>
+              <p class="card-text">
+                From planned adventures to completely accidental ones,
+                every trip became another story I never want to forget.
+              </p>
+              <div class="quote">“Let’s keep collecting places, sunsets, and stories.”</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter right">
+          <div class="chapter-dot"></div>
+          <div class="card">
+            <div class="card-top">
+              <div class="chapter-number">Chapter 04 · Home</div>
+              <div class="date">The Comfort</div>
+            </div>
+            <div class="gallery-wrap">
+              <div class="gallery video-gallery">
+                <div class="video-slide">
+                  <video controls playsinline preload="metadata" poster="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.03.45 PM\WhatsApp Image 2026-09-15 at 11.03.26 PM (1).jpeg">
+                    <source src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Video 2026-09-15 at 10.40.42 PM.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                  </video>
+                  <span class="video-label">Moment 01</span>
+                </div>
+                <div class="video-slide">
+                  <video controls playsinline preload="metadata" poster="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.03.45 PM\WhatsApp Image 2026-09-15 at 11.03.26 PM.jpeg">
+                    <source src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Video 2026-09-15 at 9.59.57 PM.mp4">
+                    Your browser does not support HTML5 video.
+                  </video>
+                  <span class="video-label">Moment 02</span>
+                </div>
+                <div class="video-slide">
+                  <video controls playsinline preload="metadata" poster="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 10.32.59 PM.jpeg">
+                    <source src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Video 2026-09-15 at 9.59.57 PM (1).mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                  </video>
+                  <span class="video-label">Moment 03</span>
+                </div>
+              </div>
+              <div class="swipe-hint"><span>Swipe to see more videos ➜</span></div>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">The place I can be completely me</h2>
+              <p class="card-text">
+                Thank you for being the kind of person who makes everything
+                feel a little softer, safer, and happier.
+              </p>
+              <div class="quote">“Love is not only butterflies. Sometimes it is simply feeling at home.”</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="chapter left">
+          <div class="chapter-dot"></div>
+          <div class="card">
+            <div class="card-top">
+              <div class="chapter-number">Chapter 05 · Today</div>
+              <div class="date">Still Choosing You</div>
+            </div>
+            <div class="gallery-wrap">
+              <div class="gallery">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Image 2026-09-15 at 9.59.58 PM (2).jpeg" alt="Today memory 1">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.17.25 PM\WhatsApp Image 2026-09-15 at 10.57.36 PM.jpeg"alt="Today memory 2">
+                <img loading="lazy" data-full src="C:\Users\Shibu\OneDrive\Desktop\project A\prototype\WhatsApp Unknown 2026-09-15 at 11.17.25 PM\WhatsApp Image 2026-09-15 at 10.57.53 PM.jpeg" alt="Today memory 3">
+              </div>
+              <div class="swipe-hint"><span>Swipe to see more ➜</span></div>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">And I would choose you again</h2>
+              <p class="card-text">
+                Thank you for every memory so far. I hope this is only the
+                beginning of a very, very long story.
+              </p>
+              <div class="quote">“Some chapters are favourite because of the story. This one is favourite because of you.”</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================
+         BIRTHDAY SURPRISE
+    ========================== -->
+    <section class="surprise" id="surprise">
+      <div class="surprise-heart">💗</div>
+      <h2>Happy Birthday, My Love</h2>
+      <p>
+        I could make a thousand timelines and still not fit everything I
+        love about you into one page. So here’s the part that matters most:
+        <strong>I’m so lucky to have you.</strong> Here’s to everything we’ve
+        lived, everything we’re living, and everything still waiting for us.
+      </p>
+      <button class="surprise-btn" id="surpriseBtn">Tap for a tiny surprise ✨</button>
+    </section>
+
+    <div class="footer">Made with too much love, a little code, and one very special girl. ♡</div>
+  </main>
+
+  <!-- Photo lightbox -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-box">
+      <img id="modalImg" src="" alt="Expanded memory">
+      <button class="modal-close" id="modalClose">Close ♡</button>
+    </div>
+  </div>
+
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+  <script>
+    /* =========================================================
+       PERSONALIZE THIS SECTION
+       =========================================================
+       Change ANNIVERSARY_DATE to your real anniversary in DDMMYYYY.
+       Example: "25122024"
+    */
+    const CORRECT_USER = "Shivam";
+    const ANNIVERSARY_DATE = "05082025"; // <-- CHANGE THIS
+
+    const body = document.body;
+    const gate = document.getElementById("gate");
+    const gateCard = document.getElementById("gateCard");
+    const loginForm = document.getElementById("loginForm");
+    const userId = document.getElementById("userId");
+    const password = document.getElementById("password");
+    const error = document.getElementById("error");
+
+    /* ---------- Gate floaters ---------- */
+    const gateFloaters = document.getElementById("gateFloaters");
+    const floaterChars = ["♡","♥","✦","✧","·"];
+    const floaterCount = 18;
+
+    for(let i=0;i<floaterCount;i++){
+      const el = document.createElement("span");
+      el.className = "floater";
+      el.textContent = floaterChars[i % floaterChars.length];
+      el.style.left = (Math.random()*100) + "%";
+      el.style.bottom = (-10 - Math.random()*25) + "%";
+      el.style.animationDelay = (-Math.random()*14) + "s";
+      el.style.animationDuration = (9 + Math.random()*9) + "s";
+      gateFloaters.appendChild(el);
+    }
+
+    /* ---------- Login ---------- */
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const nameOk = userId.value.trim().toLowerCase() === CORRECT_USER.toLowerCase();
+      const dateOk = password.value.trim() === ANNIVERSARY_DATE;
+
+      if(nameOk && dateOk){
+        error.textContent = "";
+        gate.classList.add("hidden");
+        body.classList.remove("locked");
+        celebrate(110);
+
+        window.setTimeout(() => {
+          gate.remove();
+        }, 950);
+      }else{
+        error.textContent = "That little secret didn’t match. Try again, love. ♡";
+        gateCard.classList.remove("shake");
+        void gateCard.offsetWidth; // one intentional reflow to restart a tiny error animation
+        gateCard.classList.add("shake");
+      }
+    });
+
+    /* ---------- Timeline reveal ----------
+       IntersectionObserver avoids a heavy scroll listener.
+    */
+    const chapters = document.querySelectorAll(".chapter");
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: "0px 0px -7% 0px"
+    });
+
+    chapters.forEach(chapter => observer.observe(chapter));
+
+    /* ---------- Keep only the active video playing ---------- */
+    const chapter4Videos = document.querySelectorAll(".video-gallery video");
+    chapter4Videos.forEach(video => {
+      video.addEventListener("play", () => {
+        chapter4Videos.forEach(other => {
+          if(other !== video) other.pause();
+        });
+      });
+    });
+
+    /* ---------- Photo lightbox ---------- */
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImg");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".gallery img").forEach(img => {
+      img.addEventListener("click", () => {
+        modalImg.src = img.dataset.full || img.src;
+        modalImg.alt = img.alt;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+      });
+    });
+
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+    }
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => {
+      if(event.target === modal) closeModal();
+    });
+    window.addEventListener("keydown", (event) => {
+      if(event.key === "Escape") closeModal();
+    });
+
+    /* ---------- Birthday surprise + confetti ---------- */
+    const surpriseBtn = document.getElementById("surpriseBtn");
+    const surprise = document.getElementById("surprise");
+
+    surpriseBtn.addEventListener("click", () => {
+      celebrate(150);
+      surpriseBtn.textContent = "I love you more than this page can say ♡";
+      surpriseBtn.style.pointerEvents = "none";
+      surprise.scrollIntoView({behavior:"smooth",block:"center"});
+    });
+
+    function celebrate(count){
+      const layer = document.getElementById("confettiLayer");
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const amount = prefersReduced ? Math.min(count, 25) : count;
+
+      for(let i=0;i<amount;i++){
+        const c = document.createElement("span");
+        c.className = "confetti";
+        c.style.left = (Math.random()*100) + "%";
+        c.style.setProperty("--drift", ((Math.random()*2-1)*180) + "px");
+        c.style.setProperty("--spin", ((Math.random()*2-1)*720) + "deg");
+        c.style.animationDuration = (2.3 + Math.random()*2.4) + "s";
+        c.style.animationDelay = (Math.random()*.22) + "s";
+        c.style.width = (5 + Math.random()*5) + "px";
+        c.style.height = (8 + Math.random()*8) + "px";
+        c.style.background = [
+          "#d98d9b","#f1b8c2","#e7a66e","#b999c7","#8bb4c8","#f4d58b"
+        ][Math.floor(Math.random()*6)];
+        layer.appendChild(c);
+        c.addEventListener("animationend", () => c.remove(), {once:true});
+      }
+    }
+
+    /* ---------- Gentle desktop mouse parallax ----------
+       rAF throttled; disabled on touch/reduced-motion.
+    */
+    const supportsHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if(supportsHover && !reduced){
+      let rafId = 0;
+      let mouseX = 0;
+      let mouseY = 0;
+
+      window.addEventListener("pointermove", (event) => {
+        mouseX = (event.clientX / window.innerWidth - 0.5);
+        mouseY = (event.clientY / window.innerHeight - 0.5);
+
+        if(!rafId){
+          rafId = requestAnimationFrame(() => {
+            document.querySelector(".orb-a").style.transform =
+              `translate3d(${mouseX*18}px,${mouseY*14}px,0)`;
+            document.querySelector(".orb-b").style.transform =
+              `translate3d(${mouseX*-12}px,${mouseY*-10}px,0)`;
+            rafId = 0;
+          });
+        }
+      }, {passive:true});
+    }
+
+    /* ---------- Safety note for missing date ---------- */
+    if(ANNIVERSARY_DATE === "DDMMYYYY"){
+      console.warn("Set ANNIVERSARY_DATE in the script before sharing this page.");
+    }
+  </script>
+</body>
+</html>
